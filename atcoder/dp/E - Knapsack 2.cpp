@@ -6,7 +6,7 @@ using namespace std ;
 
 // dp[i] - menor peso p conserguir o valor i 
 
-const int maxn = 1e3 + 5 ; 
+const int maxn = 110 ; 
 const int maxv = 1e5 + 5 ; 
 const ll inf = 1e18 ; 
 
