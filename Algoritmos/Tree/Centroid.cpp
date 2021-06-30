@@ -31,7 +31,6 @@ void make_a(int v, int p){
      int c = find_cent(v, p, sz[v]) ; 
      if(!ok) f = c, ok = 1 ; 
      mark[c] = 1 ;
-     grafoc[c].push_back(p), grafoc[p].push_back(c) ; 
 
      for(auto a : grafo[c]){
      	if(mark[a] || a == p) continue ; 
