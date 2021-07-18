@@ -9,7 +9,7 @@ double dp[maxn][maxn][maxn], n ;
 
 // p(qx) = qx/n 
 
-double solve(int q1, int q2, int q3){
+double solve(int q1, int q2, int q3){ //qts rodadas esperadas p q1, q2, q3
 
 	if(!q1 && !q2 && !q3) return 0 ; 
 	if(q1 < 0 || q2 < 0 || q3 < 0) return 0 ; 
