@@ -33,7 +33,7 @@ void dfs(int v, int p){
 
 }
 
-bool cmp(Q a, Q b){
+bool cmp(Q a, Q b){ //ordena - mo 
 	if((a.l/sq) != (b.l/sq)) return a.l < b.l ; 
 	return ((a.l/sq)&1 ? (a.r < b.r) : (a.r > b.r)) ; 
 }
@@ -57,8 +57,8 @@ int _lca(int a, int b){
 }
 
 void check(int pos){
-	if(f[pos] && (--cor_f[v[pos]] == 0)) qtd_cor-- ; 
-	else if(!f[pos] && (cor_f[v[pos]]++ == 0)) qtd_cor++ ; 
+	if(f[pos] && (--cor_f[v[pos]] == 0)) qtd_cor-- ; //aparece n° par de vzs e eh o unico da cor
+	else if(!f[pos] && (cor_f[v[pos]]++ == 0)) qtd_cor++ ; //aparece n° impar d vzs e eh o unico da cor
 	f[pos] ^= 1 ; 
 }
 
@@ -77,11 +77,11 @@ void solve(){
 
 		int u = id[l], v = id[r] ; 
 
-		if(q[i].lca != u && q[i].lca != v) check(q[i].lca) ;
+		if(q[i].lca != u && q[i].lca != v) check(q[i].lca) ; //add lca 
 
 		ans[q[i].id] = qtd_cor ; 
 
-		if(q[i].lca != u && q[i].lca != v) check(q[i].lca) ;
+		if(q[i].lca != u && q[i].lca != v) check(q[i].lca) ; //retira lca
 
 	}
 
@@ -95,7 +95,7 @@ int main(){
 
 	int ct = 0 ; 
 
-	for(int i = 1 ; i <= n ; i++){
+	for(int i = 1 ; i <= n ; i++){ //compressão
 		cin >> v[i] ; 
 		if(mapa.find(v[i]) == mapa.end()) mapa[v[i]] = ct++ ; 
 		v[i] = mapa[v[i]] ; 
@@ -129,7 +129,7 @@ int main(){
 		cin >> u >> v ; 
 		int lca = _lca(u, v) ; // tin de u smp menor
 		q[i].lca = lca ; 
-		if(tin[v] < tin[u]) swap(u, v) ; 
+		if(tin[v] < tin[u]) swap(u, v) ; //u smp tem tin menor 
 		if(lca == u) q[i].l = tin[u], q[i].r = tin[v] ; 
 		else q[i].l = tout[u], q[i].r = tin[v] ; 
 		q[i].id = i ; 
