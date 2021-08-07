@@ -16,9 +16,9 @@ int main(){
 	}
 
 	for(int i = 1 ; i <= n ; i++){
-		maior = max(maior + vec[i], 0) ; 
+		maior = max(maior + vec[i], 0) ; // maior resp usando oposto
 		resp = max(resp, maior) ; 
-		maior2 = max(0, maior2 + v[i]) ; 
+		maior2 = max(0, maior2 + v[i]) ; //maior resp usando + 
 		resp2 = max(resp2, maior2) ; 
 	}
 
