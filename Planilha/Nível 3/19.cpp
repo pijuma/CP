@@ -21,6 +21,14 @@ int exp(int a, int b){
 
 }
 
+// ...#...#...
+// AAA#BBB#CCC
+// temos q acender 9 lamp - 9! formas 
+// mas dentro do grupo tem ordens especificas -> a tem q começar dir
+// C na esq 
+// B tem duas formas de ligar cada lamp - 2^qtdB
+// a unica coisa q muda eh a ordem entre os grupos portanto dividimos por qtdX!
+
 int32_t main(){
 
 	cin >> n >> m ; 
