@@ -1,13 +1,14 @@
 #include<bits/stdc++.h>
-#define int long long 
+#define ll long long 
 using namespace std ; 
 
 const int maxn = 2e3 + 5 ; 
 const int mod = 1e9 + 7 ; 
 
-int n, k, dp[maxn][maxn], ans ; 
+int n, k ; 
+ll dp[maxn][maxn], ans ; 
 
-int solve(int i, int k){
+ll solve(int i, int k){
 	
 	if(dp[i][k] != -1) return dp[i][k] ; 
 	if(k == 0) return 1 ; 
@@ -23,8 +24,10 @@ int solve(int i, int k){
 
 }
 
-int32_t main(){
+int main(){
 
+	ios_base::sync_with_stdio(false) ; cin.tie(NULL) ; 
+	
 	cin >> n >> k ; 
 
 	memset(dp, -1, sizeof dp) ; 
