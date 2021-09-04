@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std ; 
+
+const int maxn = 50010 ; 
+
+struct tripla{
+	int z, x, y ; 
+} ; 
+
+int n, ans ; 
+tripla v[maxn] ; 
+
+bool cmp(tripla a, tripla b){ return a.z <= b.z ; }
+
+// A domina B se tds as coords de B são menores q A 
+
+struct P{
+
+	set<pair<int,int>> s ; 
+
+	int add(tripla val){
+		
+		pair<int,int> at = {val.x, val.y} ; 
+		auto it = s.upper_bound(at) ; //peguei o 1o cara q tem x maior
+
+		if(it != s.end() && (*it).second > at.second) return 0 ; // se o y dele tb for maior
+		// ent sou dominado 
+
+		vector<pair<int,int>> eraser ; 
+
+		while(it != s.begin()){ 
+			it-- ; 
+			if((*it).second > at.second) break ; // pss tirar tds os caras q tem x e y menor q o meu pois
+			// se eu "domino" eles tirando em z dominarei tds os proximos q eles tb dominam  
+			eraser.push_back(*it) ; 
+		}
+
+		for(auto a : eraser) s.erase(a) ; 
+		s.insert(at) ; 
+	    return 1 ; 
+	}
+
+} pareto ;
+
+int main(){
+
+	freopen("pareto.in", "r", stdin);
+	freopen("pareto.out", "w", stdout);
+
+	cin >> n ; 
+
+	for(int i = 1 ; i <= n ; i++){
+		int a, b, c ; 
+		cin >> a >> b >> c ; 
+		v[i] = {a, b, c} ; 
+	}
+
+	sort(v + 1, v + 1 + n, cmp) ; 
+
+	for(int i = n ; i > 0 ; i--){ // tds q foram colocados tem z maior 
+		ans += pareto.add(v[i]) ; 
+	}
+
+	cout << ans << "\n" ; 
+
+}
