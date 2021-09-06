@@ -4,7 +4,7 @@ using namespace std ;
 const int maxn = 205 ; 
 const int inf = 1e9 ; 
 
-int n, v[maxn], resp, ps[maxn], dp[maxn][maxn] ; 
+int n, v[2*maxn], resp, ps[2*maxn], dp[2*maxn][2*maxn] ; 
 double f ; 
 
 int solve(int i, int j){
