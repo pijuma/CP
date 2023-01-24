@@ -1,5 +1,7 @@
 // bidirecionado pode ter dois impares e ligamos ele p fzr o ciclo dps tiramos 
-// nesse ele precisa ir de 1 a n 
+// nesse ele precisa ir de 1 a n
+// caminho euleriano
+
 #include<bits/stdc++.h>
 using namespace std ; 
 
