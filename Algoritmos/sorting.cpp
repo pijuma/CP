@@ -2,7 +2,7 @@
 for(int i = 1 ; i <= n ; i++){
   menor = inf ; 
   for(int j = 1 ; j <= n ; j++){
-    if(!lista[v[j]] && menor > v[j]) menor = v[i] ; 
+    if(!lista[v[j]] && menor > v[j]) menor = v[j] ; 
   }
   lista[menor] = 1 ; 
   cout << menor << "\n" ;
