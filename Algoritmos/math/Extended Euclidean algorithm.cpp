@@ -2,30 +2,43 @@
 #include<bits/stdc++.h>
 using namespace std ; 
 
-int gcd(int a, int b, int &x, int &y){
-	
-	if(!b){
-		x = 1, y = 0 ; 
-		return a ; 
-	}
+int gcd_ext(int a, int b, int *i, int *j){
+    
+    if(a < b) swap(a, b) ;
 
-	int x1, y1 ; 
+    if(!b){ // caso base 1 = i*a + b*j -> i = 1, j = 0 
+        *i = 1, *j = 0 ; 
+        return a ; 
+    }
+    
+    int d = gcd_ext(b, a%b, i, j) ; // gcd normal 
 
-	int d = gcd(b, a%b, x1, y1) ; 
+    int lsti = *i, lstj = *j ; 
 
-	x = y1 ; 
-	y = x1 - y1*(a/b) ; 
-
-	return d ; 
-
+    /*
+    gcd(a, b) = gcd(b, c) -> c = a-qb q = a/b
+    ia + bj = bI + cJ -> bI + (a-qb)*J
+    ia + bj = b(I-Jq) + Ja -> i = J e j = (I - Jq) 
+    portanto sendo I e J os que temos do anterior (recursivo) queremos achar i e j 
+    o caso base eh quando mdc = 1 
+    *estamos basicamente resolvendo a eq diofantina e para essa temos um teorema 
+    que quando ia+bj = 1 quer dizer que i é inverso modular de a e j é inverso modular de b 
+    dai a utilidade do estendido  
+    */
+    
+    *i = *j ; 
+    *j = lsti - lstj*(a/b);
+    
+    return d ; 
+    
 }
 
 int main(){
-
-	cin >> a >> b ;
-
-	int a1, b1 ; 
-
-	cout << gcd(a, b, a1, b1) << "\n" ; 
-	
+    
+    int a, b ; cin >> a >> b ; 
+    int i, j ; 
+    gcd_ext(a, b, &i, &j) ; 
+    
+    cout << i << " " << j << "\n" ;
+    
 }
