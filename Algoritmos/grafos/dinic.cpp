@@ -8,6 +8,8 @@ s: no de origem
 sink: no destino 
 cut: acha mincut -> menor conjunto de arestas que precisamos tirar para desconectar a fonte do destino -> funciona pra se tiver peso 
 ele pega a qtd q minimiza a soma 
+run: pega o min cost num caminho 
+flow: pega o max flow - soma todas as capacidades dos caminos do source pro sink 
 */
     
 #include<bits/stdc++.h>
