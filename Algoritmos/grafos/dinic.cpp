@@ -108,7 +108,20 @@ struct Dinic {
         }
         return cuts;
     }
- 
+
+    vector<pair<int,int>> recuperar(){
+        vector<pair<int,int>> resp ; 
+        for(auto a : edge){
+            if(a.from == sink || a.from == source) continue ;
+            if(a.to == sink || a.to == source) continue ; 
+            if(a.to > n || a.to < 1) continue ;
+            if(a.from <= n || a.from > m + n) continue ;  
+            if(!a.flow) continue ; 
+            resp.push_back({a.to, a.from-n}) ; 
+        }
+        return resp ; 
+    }
+
 } ;
  
 int32_t main(){
