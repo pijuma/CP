@@ -17,23 +17,23 @@ o que melhora a eficiencia em grafos densos
 */
 
 #include<bits/stdc++.h>
-#define int long long 
 using namespace std ; 
 
 #define f first 
 #define s second 
 #define pb push_back 
+#define ll long long 
 #define pii pair<int,int> 
 
 typedef long long T ; 
 
-struct EK{
+struct D{
 
     const T inf =  0x3f3f3f3f3f3f3f3fll ;
 
     struct Edge{
-        int u, c, f ; // nó, capacidade e fluxo 
-        Edge(int u, int f, int c) : u(u), f(f), c(c) {}
+        ll u, f, c ; // nó, capacidade e fluxo 
+        Edge(ll u, ll f, ll c) : u(u), f(f), c(c) {}
     } ;
 
     vector<Edge> edges ; // guarda os nós 
@@ -41,9 +41,9 @@ struct EK{
     vector<int> d ; // distancias 
     vector<int> ptr ; // diferente do EK 
 
-    EK(int n){ // inicializacao 
+    D(int n){ // inicializacao 
         g.assign(n+5, vector<int>()) ;
-        d.resize(n+5) ; 
+        d.resize(n+5) ; ptr.resize(n+5) ;
     }
 
     void add_edge(int u, int v, int c){
@@ -81,14 +81,15 @@ struct EK{
 
     }
 
-    int dfs(int u, int sink, int mn){ // no atual, final, menor fluxo disponivel 
+    ll dfs(int u, int sink, ll mn){ // no atual, final, menor fluxo disponivel 
         
         if(mn == 0 || u == sink) return mn ; 
 
-        for(int *i = ptr[u] ; i < g[u]).size() ; i++{
+        for(int &i = ptr[u] ; i < g[u].size() ; i++){
+            int a = g[u][i] ;
             Edge ed = edges[a] ; 
             if(!(ed.f < ed.c && d[ed.u] == d[u] + 1)) continue ; 
-            if(int x = dfs(ed.u, sink, min(mn, ed.c-ed.f)) > 0){// menor valor indo dps 
+            if(ll x = dfs(ed.u, sink, min(mn, ed.c-ed.f))){// menor valor indo dps 
                 //precisa aumentar o fluxo na normal e reduzir na invertida 
                 edges[a].f += x ; // normal
                 edges[a^1].f -= x ; // invertida
@@ -100,13 +101,13 @@ struct EK{
 
     }
 
-    int max_flow(int source, int sink){
+    ll max_flow(int source, int sink){
 
-        int ans = 0 ; 
+        ll ans = 0 ; 
 
         while(bfs(source, sink)){ // enquanto tiver caminho aumentante
             fill(ptr.begin(), ptr.end(), 0) ; // diferente do EK 
-            ans += dfs(source, sink, inf) ; // pego ele 
+            while(ll x = dfs(source, sink, inf)) ans += x ; // acha varios de uma vez 
         }   
 
         return ans ; 
@@ -115,17 +116,19 @@ struct EK{
 
 } ;
 
-int32_t main(){
+int main(){
+
+    ios_base::sync_with_stdio(false) ; cin.tie(NULL) ;
 
     int n, m ; cin >> n >> m ;
 
-    EK ek(n) ;
+    D d(n) ;
 
     for(int i = 1 ; i <= m ; i++){
         int u, v, c ; cin >> u >> v >> c ; 
-        ek.add_edge(u, v, c) ;
+        d.add_edge(u, v, c) ; d.add_edge(v, u, c) ;
     }
 
-    cout << ek.max_flow(1, n) << "\n" ; 
+    cout << d.max_flow(1, n) << "\n" ; 
 
 }
