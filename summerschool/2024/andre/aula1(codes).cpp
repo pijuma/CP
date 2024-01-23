@@ -106,3 +106,52 @@ void find_art(int v, int p){
 // ao final desempilha TUDO 
 // na pilha salva o id das arestas 
 
+void nova_comp(int id){
+    c++ ; 
+    while(1){
+        int vrt = pilha[p] ; p-- ; 
+        comp[a] = c ; 
+        if(p==-1 || vrt == id) break ; 
+    }
+}
+
+void dfs(int v, int p){
+
+    tin[v] = low[v] = ++timer ; 
+    int child = 0 ; 
+
+    for(int i = 0 ; i < grafo[v].size() ; i++){
+        int id = ar[v][i], kra = grafo[v][i] ;
+        if(vis[id]) continue ; 
+        vis[id] = 1 ; 
+        p++ ; pilha[p] = v ; 
+        if(tin[kra]){
+            child++ ; 
+            dfs(kra, v) ; 
+            low[v] = min(low[v], low[kra]) ;
+            bool new_comp = 0 ; 
+            if(v==1 && child > 1) new_comp = 1 ; 
+            if(v != 1 && low[kra] >= tin[v]) new_comp = 1 ; 
+            if(new_comp){
+                pto_art[v] = 1 ; 
+                nova_comp(id) ;
+            }
+            continue ; 
+        } 
+        low[v] = min(low[v], tin[kra]) ; 
+    }   
+}
+// p = -1 c = 0 dfs(1, 0) nova_comp(-1) - no final p limpar a pilha
+
+// blocked-cut tree 
+// resume as arestas da biconnected e liga sempre a um ponto de articulacao 
+
+for(int i = 1 ; i <= n ; i++){
+
+    if(pto_art[i] != 1) continue ; 
+
+    c++ ; 
+    pto_art[i] = c ; 
+
+    for(int j = 0 ; j < ar[i].size())
+}
