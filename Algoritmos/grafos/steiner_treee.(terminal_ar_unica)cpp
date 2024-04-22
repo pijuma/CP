@@ -1,0 +1,102 @@
+#include<bits/stdc++.h>
+using namespace std ; 
+
+#define double long double 
+
+#define pb push_back
+#define ll long long 
+#define ff first 
+#define ss second 
+#define pii pair<int,int> 
+
+const int maxn = 110 ; 
+const double inf = 1000000000005.000 ; 
+
+/*
+0 indexado
+n cidades e k capitais 
+cada linha de transmissão tem um custo que eh a dist euclidiana entre
+as cidades conectadas 
+soma dos custos ser min 
+todas capitais precisam estar conectadas 
+cada capital so pode ter uma aresta
+Steiner tree problem
+*/
+map<pii, int> id ; 
+pii who[maxn] ; 
+double dist[maxn][maxn] ; // floyd warshall 
+double dp[maxn][(1<<11)] ; 
+
+double d(pii a, pii b){
+    double dx = a.ff - b.ff ; 
+    double dy = a.ss - b.ss ; 
+    dx *= dx ; dy *= dy ; 
+    return (double) sqrt(dx + dy) ; 
+}
+
+int main(){
+
+    int n, k ; cin >> n >> k ;
+
+    for(int i = 0 ; i < n ; i++){
+        int x, y ; cin >> x >> y ; 
+        id[{x ,y}] = i ; 
+        who[i] = {x, y} ; 
+    }
+
+    for(int i = 0 ; i < n ; i++){
+        for(int j = 0 ; j < n ; j++) dist[i][j] = inf ; 
+    }
+
+    for(int i = 0 ; i < n ; i++){
+        for(int j = 0 ; j < n ; j++){
+            if(i == j) continue ; 
+            dist[i][j] = d(who[i], who[j]) ; 
+        }
+    }
+    
+    for(int md = 0 ; md < n ; md++){ // i -> j passando por md 
+        for(int i = 0  ; i < n ; i++){
+            for(int j = 0 ; j < n ; j++){
+                dist[i][j] = min(dist[i][j], dist[i][md] + dist[md][j]) ; 
+            }
+        }
+    }
+
+    //computar steiner tree 
+
+    for(int i = 0 ; i < n ; i++){
+        for(int j = 0 ; j < (1<<k) ; j++) dp[i][j] = inf ; 
+    }
+
+    //caso base -> estar no kra n uso aresta
+    for(int i = 0 ; i < k ; i++) dp[i][(1<<i)] = 0 ; 
+
+    //i e j começam de k pois n qro mergear
+    //cidades terminais -> se isso acontecer 
+    // elas podem ter 2 arestas 
+    for(int mask = 0 ; mask < ((1<<k)) ; mask++){ //vertices terminais unidos
+        for(int i = k ; i < n ; i++){ // raiz -> queremos calcular dp[i][mask] 
+            for(int smask = mask ; smask > 0 ; smask = (smask-1)&mask){ //submask de mask 
+                    dp[i][mask] = min(dp[i][mask], dp[i][smask] + dp[i][mask-smask]) ;
+                    // eh oq eu tenho usando i como raiz + o complementar 
+                    //mask = smask|(mask-smask) 
+                    //unindo arvores menores em maiores 
+            }
+        }
+        for(int i = 0 ; i < n ; i++){
+             if(dp[i][mask] < inf){
+                for(int j = k ; j < n ; j++){ // qro tentar colocar vertices n terminais na resp 
+                    dp[j][mask] = min(dp[j][mask], dp[i][mask] + dist[i][j]) ; 
+                }
+            }
+        }
+    }
+
+    int full = (1<<k) -1 ;
+
+    double ans = dp[0][full] ; 
+    for(int i = 1 ; i < n ; i++) ans = min(ans, dp[i][full]) ; // qro a raiz q me da o min 
+    cout << fixed << setprecision(5) << ans << "\n" ;
+
+}
