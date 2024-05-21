@@ -1,11 +1,17 @@
+#include<bits/stdc++.h>
+#define int long long 
+using namespace std ; 
+
 /*
-algoritmo de min cost/max flow ford fulkerson 
-O(max_flow*E)
-cria aresta normal e invertida com a capacidade - faz uma dfs pra pegar o caminho 
-e sai subtraindo a menor capacidade do caminho todo 
-dai inverte as arestas - faz isso enquanto der 
+acha max_flow 
+que é igual em valor ao min_cut 
+com otimização "scaling algorithm" O(m^2*log(MaxC)) - rapido enough 
 */
-const int N = 2000010;
+#define pb push_back
+
+const int N = 550 ;
+
+int MaxC ; 
 
 struct Ford {
     struct Edge {
@@ -29,15 +35,16 @@ struct Ford {
         adj[b].pb(cur++);
     }
 
-    int dfs(int s, int t, int f, int tempo) {
+    int dfs(int s, int t, int f, int tempo, int val) {
         
         if(s == t) return f; // f guarda o valor min de capacidade 
         
         vis[s] = tempo;// ja visitou nessa dfs?
 
         for(int e : adj[s]) {
+            if(edges[e].c - edges[e].f < val) continue ; 
             if(vis[edges[e].to] < tempo and (edges[e].c - edges[e].f) > 0) {
-                if(int a = dfs(edges[e].to, t, min(f, edges[e].c-edges[e].f) , tempo)) {
+                if(int a = dfs(edges[e].to, t, min(f, edges[e].c-edges[e].f) , tempo, val)) {
                     edges[e].f += a; // inversões das arestas
                     edges[e^1].f -= a; // add no sentido contrario e remove no atual 
                     return a;//dfs retorna o min 
@@ -53,9 +60,12 @@ struct Ford {
 
         int mflow = 0, tempo = 1;
         
-        while(int a = dfs(s, t, INF, tempo)) {
-            mflow += a; // a -> corte minimo do caminho atual 
-            tempo++;
+        for(int i = log2(MaxC) ; i >= 0 ; i--){
+           while(int a = dfs(s, t, MaxC, tempo, (1<<i))){
+                mflow += a; // a -> corte minimo do caminho atual 
+                tempo++;
+           }
+           tempo++ ; 
         }
         
         return mflow; // fluxo maximo = qtd de camnihos de S pra T 
@@ -63,3 +73,21 @@ struct Ford {
     }
 
 };
+
+int32_t main(){
+
+    ios_base::sync_with_stdio(false) ; cin.tie(NULL) ; 
+
+    int n, m ; cin >> n >> m ; 
+
+    Ford F ; 
+
+    for(int i = 1 ; i <= m ; i++){
+        int a, b, c ; cin >> a >> b >> c ; 
+        F.addEdge(a, b, c, 0) ;
+        MaxC = max(MaxC, c) ; 
+    }
+
+    cout << F.flow(1, n) << "\n" ;
+
+} 
